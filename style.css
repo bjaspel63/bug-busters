@@ -1,0 +1,164 @@
+/* ===== General Layout ===== */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  background: linear-gradient(135deg, #ffecd2, #fcb69f, #a1c4fd, #c2e9fb);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  color: #333;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+h1 {
+  text-align: center;
+  font-size: 2.8rem;
+  margin: 20px 0;
+  color: #fff;
+  text-shadow: 2px 3px 6px rgba(0,0,0,0.5);
+}
+
+/* ===== Sections ===== */
+section {
+  max-width: 850px;
+  margin: 20px auto;
+  background: #fff;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+  transition: transform 0.3s ease;
+}
+section:hover {
+  transform: translateY(-2px);
+}
+
+h2 {
+  margin-top: 0;
+  color: #444;
+}
+
+/* ===== Buttons ===== */
+button {
+  background: linear-gradient(135deg, #ff9800, #f57c00);
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: transform 0.2s, background 0.3s, box-shadow 0.3s;
+}
+button:hover {
+  background: linear-gradient(135deg, #ffa726, #fb8c00);
+  transform: scale(1.07);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+}
+button:active {
+  transform: scale(0.95);
+}
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ===== Code Snippet Area ===== */
+#codeSnippet {
+  background-color: #000 !important;  /* force black background */
+  color: #eee !important;             /* force light text */
+  font-family: 'Courier New', Courier, monospace !important;
+  padding: 15px !important;
+  border-radius: 10px !important;
+  white-space: pre-wrap !important;
+  overflow-x: auto !important;
+  font-size: 1.1rem !important;
+  line-height: 1.5 !important;
+  user-select: text !important;
+  border: 3px solid #ff9800 !important;
+}
+
+#codeSnippet div {
+  display: block !important;
+}
+
+#codeSnippet div::before {
+  counter-increment: line !important;
+  content: counter(line) !important;
+  display: inline-block !important;
+  width: 2em !important;
+  margin-right: 10px !important;
+  text-align: right !important;
+  color: #999 !important;
+  user-select: none !important;
+}
+
+.code-line span {
+  transition: background-color 0.2s !important;
+  color: #eee !important;
+}
+.code-line span:hover {
+  background-color: rgba(255, 152, 0, 0.3) !important;
+  border-radius: 3px !important;
+}
+
+/* ===== Score Badge ===== */
+#scoreDisplay {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+  display: inline-block;
+  background: #4caf50;
+  padding: 8px 14px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* Input focus style */
+#newUserNameInput:focus {
+  border-color: #f57c00;
+  box-shadow: 0 0 8px #f57c00;
+}
+
+/* ===== Floating Music Button ===== */
+#toggleMusicBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  font-size: 1.6rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  background: radial-gradient(circle at 30% 30%, #ff9800, #f57c00);
+  animation: pulse 2s infinite;
+  color: white;
+  border: none;
+}
+#bugExplanation {
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 1rem;
+  display: none;
+  background: #2d2d2d; /* dark box */
+  color: #f1f1f1;
+  border-left: 5px solid #ff9800; /* highlight bar */
+  text-align: left;
+}
+#bugExplanation p {
+  margin: 6px 0;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 0 12px rgba(255,152,0,0.6); }
+  50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(255,152,0,0.8); }
+  100% { transform: scale(1); box-shadow: 0 0 12px rgba(255,152,0,0.6); }
+}

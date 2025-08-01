@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bug Busters: Debugging Challenge</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Game Section styles overrides */
+    #gameSection {
+      max-width: 600px;
+      margin: 20px auto;
+      text-align: center;
+      display: none;
+    }
+    #codeSnippet {
+      background-color: #1e1e1e; /* Dark background */
+      color: #dcdcdc;            /* Light text */
+      font-family: 'Courier New', Courier, monospace;
+      padding: 15px;
+      border-radius: 10px;
+      white-space: pre-wrap;
+      overflow-x: auto;
+      font-size: 1.1rem;
+      min-height: 150px;
+      text-align: left;
+      border: 3px solid #ff9800;
+      user-select: text;
+      margin-bottom: 15px;
+    }
+    #bugExplanation {
+      margin-top: 15px;
+      padding: 12px 15px;
+      background-color: #0b2940; /* Dark blue */
+      color: #a8d0ff;            /* Light blue text */
+      border-radius: 8px;
+      font-size: 1rem;
+      display: none;
+      text-align: left;
+      min-height: 60px;
+      box-shadow: 0 0 10px rgba(255, 152, 0, 0.6);
+      user-select: text;
+    }
+  </style>
+</head>
+<body>
+  <h1>🐞 Bug Busters: Debugging Challenge 🔍</h1>
+
+  <!-- Player Section -->
+  <section id="playerSection" style="max-width: 400px; margin: 0 auto; text-align: center;">
+    <label for="newUserNameInput" style="font-weight: bold; font-size: 1.2rem; display: block; margin-bottom: 10px; color: #444;">
+      Enter Your Player Name
+    </label>
+    <input
+      type="text"
+      id="newUserNameInput"
+      placeholder="e.g., Bug Hunter"
+      style="
+        width: 80%;
+        padding: 12px 15px;
+        font-size: 1.1rem;
+        border-radius: 12px;
+        border: 2px solid #ff9800;
+        box-shadow: 0 2px 5px rgba(255, 152, 0, 0.3);
+        outline: none;
+        transition: border-color 0.3s ease;
+        display: inline-block;
+      "
+      autocomplete="off"
+      disabled
+    />
+    <button
+      id="createUserBtn"
+      style="
+        margin-top: 15px;
+        padding: 12px 25px;
+        font-size: 1.2rem;
+        border-radius: 12px;
+        background-color: #ff9800;
+        color: white;
+        font-weight: bold;
+        box-shadow: 0 4px 8px rgba(255, 152, 0, 0.5);
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        display: inline-block;
+      "
+      disabled
+    >
+      Start Game
+    </button>
+    <p id="restartHint" style="font-size: 0.9rem; color: #666; margin-top: 8px;">
+      To play again, just click ‘Start Game’.
+    </p>
+
+    <div id="playerInfo" style="margin-top: 15px; font-weight: bold; color: #444;"></div>
+  </section>
+
+  <p id="loadingMessage" style="text-align:center; color:#666; margin-top:15px;">
+    ⏳ Please wait, loading snippets...
+  </p>
+
+  <!-- Game Section -->
+  <section id="gameSection">
+    <h2>Fix the Code!</h2>
+    <p id="timerDisplay" style="font-weight: bold; font-size: 1.2rem; color: #d32f2f;">Time Left: 5:00</p>
+
+    <pre id="codeSnippet"></pre>
+
+    <div id="bugExplanation"></div>
+
+    <div style="margin-top: 15px;">
+      <button id="showHintBtn" style="margin-right: 10px;">💡 Show Hint</button>
+      <button id="nextSnippetBtn">➡️ Next Snippet</button>
+    </div>
+    <p id="scoreDisplay" style="margin-top: 15px; font-weight: bold; color: #333;">Completed: 0</p>
+  </section>
+
+  <!-- Certificate Section -->
+  <section id="certificateSection" style="display:none; max-width: 400px; margin: 20px auto; text-align: center;">
+    <h2>📜 Certificate</h2>
+    <button
+      id="generateCertificateBtn"
+      style="
+        display:none;
+        padding: 12px 25px;
+        font-size: 1.1rem;
+        border-radius: 12px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+      "
+    >
+      Download Certificate
+    </button>
+  </section>
+
+  <audio id="bgMusic" src="background-music.mp3" loop autoplay muted></audio>
+  <audio id="nextSound" src="next.mp3" preload="auto"></audio>
+  <audio id="finishSound" src="finish.mp3" preload="auto"></audio>
+
+  <button
+    id="toggleMusicBtn"
+    style="position: fixed; bottom: 20px; right: 20px; font-size: 1.5rem; background: none; border: none; cursor: pointer;"
+  >
+    🔈
+  </button>
+
+  <!-- JS + Libs -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

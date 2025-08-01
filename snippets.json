@@ -1,0 +1,110 @@
+[
+  {
+    "code": "prin('Hello World')",
+    "fixes": [
+      {
+        "line": 0,
+        "position": 0,
+        "length": 4,
+        "correct": "print",
+        "explanation": "The function name is 'print', not 'prin'. Spelling matters in coding!"
+      }
+    ]
+  },
+  {
+    "code": "for i in range(5)\n    print(i)",
+    "fixes": [
+      {
+        "line": 0,
+        "position": 17,
+        "length": 0,
+        "correct": ":",
+        "explanation": "A colon ':' is needed after the 'for' loop to start the loop block."
+      }
+    ]
+  },
+  {
+    "code": "if x = 10:\n    print('x is 10')",
+    "fixes": [
+      {
+        "line": 0,
+        "position": 5,
+        "length": 1,
+        "correct": "==",
+        "explanation": "'=' assigns a value, but to check if x equals 10, use '=='."
+      }
+    ]
+  },
+  {
+    "code": "def greet(name)\n    print('Hello', name)",
+    "fixes": [
+      {
+        "line": 0,
+        "position": 16,
+        "length": 0,
+        "correct": ":",
+        "explanation": "Functions need a colon ':' after the parameters to define the function body."
+      }
+    ]
+  },
+  {
+    "code": "while True\n    print('Looping')",
+    "fixes": [
+      {
+        "line": 0,
+        "position": 10,
+        "length": 0,
+        "correct": ":",
+        "explanation": "The 'while' loop requires a colon ':' after the condition."
+      }
+    ]
+  },
+  {
+    "code": "name = input('Enter name: ')\nprint('Hello' + name)",
+    "fixes": [
+      {
+        "line": 1,
+        "position": 0,
+        "length": 0,
+        "correct": "  ",
+        "explanation": "Indentation is important! The print statement should be indented inside the block."
+      }
+    ]
+  },
+  {
+    "code": "def add(a, b):\n    return a + b\n\nprint(add(2))",
+    "fixes": [
+      {
+        "line": 3,
+        "position": 10,
+        "length": 1,
+        "correct": "2,3",
+        "explanation": "The function 'add' needs two numbers, so we pass both 2 and 3 as arguments."
+      }
+    ]
+  },
+  {
+    "code": "for i in range(3):\nprint(i)",
+    "fixes": [
+      {
+        "line": 1,
+        "position": 0,
+        "length": 0,
+        "correct": "    ",
+        "explanation": "The code inside a 'for' loop must be indented to show it belongs to the loop."
+      }
+    ]
+  },
+  {
+    "code": "my_dict = {'a': 1, 'b': 2}\nprint(my_dict['c'])",
+    "fixes": [
+      {
+        "line": 1,
+        "position": 15,
+        "length": 1,
+        "correct": "'a'",
+        "explanation": "'c' is not a key in the dictionary. Use an existing key like 'a' to avoid errors."
+      }
+    ]
+  }
+]
