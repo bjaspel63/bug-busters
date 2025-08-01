@@ -288,17 +288,34 @@ function loadSnippet(index) {
 }
 
   // ===== Show hint button =====
-  showHintBtn.addEventListener("click", () => {
-    if (!currentSnippet || currentSnippet.fixes.length === 0) {
-      return alert("No hints available.");
-    }
-    if (score < 1) {
-      return alert("Not enough points for a hint.");
-    }
+  const hintModal = document.getElementById("hintModal");
+const hintText = document.getElementById("hintText");
+const closeBtn = hintModal.querySelector(".close");
+
+showHintBtn.addEventListener("click", () => {
+  if (!currentSnippet || currentSnippet.fixes.length === 0) {
+    hintText.textContent = "⚠️ No hints available.";
+  } else if (score < 1) {
+    hintText.textContent = "⚠️ Not enough points for a hint.";
+  } else {
     updateScore(-1);
     const hintFix = currentSnippet.fixes[0];
-    alert(`💡 Hint: Look at line ${hintFix.line + 1}, near position ${hintFix.position + 1}`);
-  });
+    hintText.textContent = `💡 Hint: Look at line ${hintFix.line + 1}, near position ${hintFix.position + 1}`;
+  }
+  hintModal.style.display = "block";
+});
+
+// Close when clicking the "×"
+closeBtn.addEventListener("click", () => {
+  hintModal.style.display = "none";
+});
+
+// Close when clicking outside modal
+window.addEventListener("click", (e) => {
+  if (e.target === hintModal) {
+    hintModal.style.display = "none";
+  }
+});
 
   // ===== Next snippet button =====
   nextSnippetBtn.addEventListener("click", () => {
