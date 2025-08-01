@@ -2,7 +2,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: "Comic Sans MS", sans-serif;
+  font-family: "Comic Sans MS", "Comic Neue", sans-serif;
   background: linear-gradient(135deg, #ffecd2, #fcb69f, #a1c4fd, #c2e9fb);
   background-size: 400% 400%;
   animation: gradientShift 15s ease infinite;
@@ -142,6 +142,13 @@ button:disabled {
   color: white;
   border: none;
 }
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 0 12px rgba(255,152,0,0.6); }
+  50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(255,152,0,0.8); }
+  100% { transform: scale(1); box-shadow: 0 0 12px rgba(255,152,0,0.6); }
+}
+
+/* ===== Bug Explanation Box ===== */
 #bugExplanation {
   margin-top: 15px;
   padding: 12px;
@@ -157,14 +164,9 @@ button:disabled {
   margin: 6px 0;
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); box-shadow: 0 0 12px rgba(255,152,0,0.6); }
-  50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(255,152,0,0.8); }
-  100% { transform: scale(1); box-shadow: 0 0 12px rgba(255,152,0,0.6); }
-}
 /* ===== Hint Modal ===== */
 .modal {
-  display: none; /* Hidden by default */
+  display: none;
   position: fixed;
   z-index: 9999;
   left: 0;
@@ -176,17 +178,17 @@ button:disabled {
 }
 
 .modal-content {
-  background: #fff3cd;
-  color: #856404;
+  background: #1e1e1e;
+  color: #a8d0ff;
   margin: 15% auto;
   padding: 20px;
-  border: 2px solid #ffecb5;
-  border-radius: 10px;
+  border: 3px solid #ff9800;
+  border-radius: 12px;
   width: 80%;
   max-width: 350px;
   font-size: 1rem;
   text-align: center;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.4);
   animation: popup 0.3s ease;
 }
 
@@ -196,11 +198,15 @@ button:disabled {
 }
 
 .close {
-  color: #856404;
+  color: #ff9800;
   float: right;
   font-size: 1.5rem;
   font-weight: bold;
   cursor: pointer;
+  transition: color 0.2s;
+}
+.close:hover {
+  color: #fff;
 }
 
 @keyframes popup {
@@ -208,3 +214,17 @@ button:disabled {
   to   { transform: scale(1); opacity: 1; }
 }
 
+/* ===== Mobile Tweaks ===== */
+@media (max-width: 480px) {
+  body {
+    font-family: "Comic Sans MS", "Comic Neue", sans-serif;
+  }
+  #codeSnippet {
+    font-size: 0.95rem !important;
+  }
+  .modal-content {
+    margin: 40% auto;
+    font-size: 0.95rem;
+    padding: 15px;
+  }
+}
