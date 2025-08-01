@@ -5,7 +5,7 @@
   let score = 0;
 
   // Timer variables
-  let timerDuration = 5 * 60; // 5 minutes in seconds
+  let timerDuration = 5 * 60; 
   let timeLeft = timerDuration;
   let timerInterval = null;
 
@@ -51,10 +51,8 @@
         clearInterval(timerInterval);
         return;
       }
-
       timeLeft--;
       updateTimerDisplay();
-
       if (timeLeft <= 0) {
         clearInterval(timerInterval);
         finishGameDueToTimeout();
@@ -72,25 +70,19 @@
   function finishGameDueToTimeout() {
     if (gameFinished) return;
     gameFinished = true;
-
     alert("⏰ Time's up! The game has finished.");
 
-    // Stop & mute bg music
     bgMusic.pause();
     bgMusic.muted = true;
 
-    // Play victory sound unmuted
     finishSound.muted = false;
     finishSound.currentTime = 0;
     finishSound.play().catch(e => console.log("Sound play error:", e));
 
     launchConfetti();
-
-    // Show certificate button & section
     generateCertificateBtn.style.display = "inline-block";
     certificateSection.style.display = "block";
 
-    // Disable next snippet button as game finished
     nextSnippetBtn.disabled = true;
     showHintBtn.disabled = true;
   }
@@ -111,161 +103,136 @@
   }
 
   // ===== Render Snippet =====
-function renderSnippet(snippet) {
-  codeSnippetEl.innerHTML = "";
-  const lines = snippet.code.split("\n");
+  function renderSnippet(snippet) {
+    codeSnippetEl.innerHTML = "";
+    const lines = snippet.code.split("\n");
 
-  lines.forEach((lineText, lineIndex) => {
-    const lineDiv = document.createElement("div");
-    lineDiv.classList.add("code-line");
+    lines.forEach((lineText, lineIndex) => {
+      const lineDiv = document.createElement("div");
+      lineDiv.classList.add("code-line");
 
-    for (let i = 0; i < lineText.length; i++) {
-      const charSpan = document.createElement("span");
-      charSpan.textContent = lineText[i];
-      charSpan.dataset.line = lineIndex;
-      charSpan.dataset.char = i;
-      charSpan.style.cursor = "pointer";
-      charSpan.addEventListener("click", () => handleCharClick(lineIndex, i));
-      lineDiv.appendChild(charSpan);
-    }
+      for (let i = 0; i < lineText.length; i++) {
+        const charSpan = document.createElement("span");
+        charSpan.textContent = lineText[i];
+        charSpan.dataset.line = lineIndex;
+        charSpan.dataset.char = i;
+        charSpan.style.cursor = "pointer";
+        charSpan.addEventListener("click", () => handleCharClick(lineIndex, i));
+        lineDiv.appendChild(charSpan);
+      }
 
-    // Add extra clickable space at line end
-    const endSpan = document.createElement("span");
-    endSpan.textContent = " ";
-    endSpan.dataset.line = lineIndex;
-    endSpan.dataset.char = lines[lineIndex].length;
-    endSpan.style.cursor = "pointer";
-    endSpan.style.display = "inline-block";
-    endSpan.style.width = "8px";
-    endSpan.addEventListener("click", () => handleCharClick(lineIndex, lines[lineIndex].length));
-    lineDiv.appendChild(endSpan);
+      // Add extra clickable space
+      const endSpan = document.createElement("span");
+      endSpan.textContent = " ";
+      endSpan.dataset.line = lineIndex;
+      endSpan.dataset.char = lines[lineIndex].length;
+      endSpan.style.cursor = "pointer";
+      endSpan.style.display = "inline-block";
+      endSpan.style.width = "8px";
+      endSpan.addEventListener("click", () => handleCharClick(lineIndex, lines[lineIndex].length));
+      lineDiv.appendChild(endSpan);
 
-    codeSnippetEl.appendChild(lineDiv);
-  });
+      codeSnippetEl.appendChild(lineDiv);
+    });
 
-  // Always hide explanation when new snippet loads
-  bugExplanationEl.style.display = "none";
-}
+    // hide explanation until player acts
+    bugExplanationEl.style.display = "none";
+  }
 
   // ===== Play sound safely =====
   function playSound(audio) {
     if (audio) {
       audio.currentTime = 0;
-      audio.play().catch((err) => console.log("🔇 Sound blocked:", err));
+      audio.play().catch(err => console.log("🔇 Sound blocked:", err));
     }
   }
 
-  // ===== Confetti function =====
+  // ===== Confetti =====
   function launchConfetti() {
-    const duration = 3 * 1000; // 3 seconds
+    const duration = 3 * 1000;
     const end = Date.now() + duration;
-
     (function frame() {
-      confetti({
-        particleCount: 5,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0 }
-      });
-      confetti({
-        particleCount: 5,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1 }
-      });
-
-      if (Date.now() < end) {
-        requestAnimationFrame(frame);
-      }
+      confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } });
+      confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } });
+      if (Date.now() < end) requestAnimationFrame(frame);
     })();
   }
 
-  // ===== Handle character click to fix bug =====
-function handleCharClick(line, charPos) {
-  if (!currentSnippet || gameFinished) return;
+  // ===== Handle click =====
+  function handleCharClick(line, charPos) {
+    if (!currentSnippet || gameFinished) return;
 
-  const fix = currentSnippet.fixes.find(f => {
-    if (f.length === 0) {
-      return f.line === line && (charPos === f.position || charPos === f.position - 1);
+    const fix = currentSnippet.fixes.find(f => {
+      if (f.length === 0) {
+        return f.line === line && (charPos === f.position || charPos === f.position - 1);
+      } else {
+        return f.line === line && charPos >= f.position && charPos < f.position + f.length;
+      }
+    });
+
+    if (fix) {
+      // Apply fix
+      const lines = currentSnippet.code.split("\n");
+      const lineText = lines[line];
+      const fixedLine =
+        lineText.substring(0, fix.position) +
+        fix.correct +
+        lineText.substring(fix.position + fix.length);
+      lines[line] = fixedLine;
+      currentSnippet.code = lines.join("\n");
+      currentSnippet.fixes = currentSnippet.fixes.filter(f => f !== fix);
+
+      renderSnippet(currentSnippet);
+      updateScore(1);
+
+      // Show explanation in styled div
+      if (fix.explanation) {
+        bugExplanationEl.innerHTML = `
+          <p style="margin:8px 0; color:#fff; font-weight:bold;">✅ Correct Fix!</p>
+          <p style="margin:8px 0;">💡 ${fix.explanation}</p>
+        `;
+        bugExplanationEl.style.display = "block";
+      }
+
+      if (currentSnippet.fixes.length === 0) {
+        bugExplanationEl.innerHTML += `
+          <p style="margin:8px 0; color:#4caf50; font-weight:bold;">
+            🎉 Well done! Snippet fully fixed!
+          </p>
+        `;
+        if (currentSnippetIndex === builtInSnippets.length - 1) {
+          finishGame();
+        }
+      }
     } else {
-      return f.line === line && charPos >= f.position && charPos < f.position + f.length;
-    }
-  });
-
-  if (fix) {
-    // Fix the bug in the code string
-    const lines = currentSnippet.code.split("\n");
-    const lineText = lines[line];
-    const fixedLine =
-      lineText.substring(0, fix.position) +
-      fix.correct +
-      lineText.substring(fix.position + fix.length);
-    lines[line] = fixedLine;
-    currentSnippet.code = lines.join("\n");
-
-    // Remove this fix from the fixes list
-    currentSnippet.fixes = currentSnippet.fixes.filter(f => f !== fix);
-
-    renderSnippet(currentSnippet);
-    updateScore(1);
-
-    // ✅ Show explanation after correct fix
-    if (fix.explanation) {
       bugExplanationEl.innerHTML = `
-        <p style="margin:8px 0; color:#fff; font-weight:bold;">✅ Correct Fix!</p>
-        <p style="margin:8px 0;">💡 Bug Explanation: ${fix.explanation}</p>
+        <p style="margin:8px 0; color:#ff5252; font-weight:bold;">❌ Not a bug. Try again.</p>
       `;
       bugExplanationEl.style.display = "block";
     }
-
-    // If no fixes remain → snippet completed
-    if (currentSnippet.fixes.length === 0) {
-      bugExplanationEl.innerHTML += `
-        <p style="margin:8px 0; color:#4caf50; font-weight:bold;">
-          🎉 Well done! Snippet fully fixed!
-        </p>
-      `;
-      if (currentSnippetIndex === builtInSnippets.length - 1) {
-        finishGame();
-      }
-    }
-  } else {
-    // ❌ Wrong click → show inside the div instead of alert
-    bugExplanationEl.innerHTML = `
-      <p style="margin:8px 0; color:#ff5252; font-weight:bold;">❌ Not a bug. Try again.</p>
-    `;
-    bugExplanationEl.style.display = "block";
   }
-}
 
-
-  // ===== Finish game normally =====
+  // ===== Finish game =====
   function finishGame() {
     if (gameFinished) return;
     gameFinished = true;
 
-    // Stop timer
     clearInterval(timerInterval);
-
-    // Play victory sound
     finishSound.muted = false;
     finishSound.currentTime = 0;
     finishSound.play().catch(e => console.log("Sound play error:", e));
 
-    // Stop & mute bg music
     bgMusic.pause();
     bgMusic.muted = true;
 
     launchConfetti();
-
     generateCertificateBtn.style.display = "inline-block";
     certificateSection.style.display = "block";
-
     nextSnippetBtn.disabled = true;
     showHintBtn.disabled = true;
   }
 
-  // ===== Update navigation buttons =====
+  // ===== Navigation =====
   function updateNavigationButtons() {
     nextSnippetBtn.disabled = gameFinished || currentSnippetIndex === builtInSnippets.length - 1;
     if (!gameFinished) {
@@ -275,49 +242,39 @@ function handleCharClick(line, charPos) {
     }
   }
 
-  // ===== Load snippet by index =====
-function loadSnippet(index) {
-  if (gameFinished) return;
+  function loadSnippet(index) {
+    if (gameFinished) return;
+    currentSnippetIndex = index;
+    currentSnippet = JSON.parse(JSON.stringify(builtInSnippets[index]));
+    renderSnippet(currentSnippet);
+    updateNavigationButtons();
+    bugExplanationEl.style.display = "none";
+  }
 
-  currentSnippetIndex = index;
-  currentSnippet = JSON.parse(JSON.stringify(builtInSnippets[index]));
-  renderSnippet(currentSnippet);
-  updateNavigationButtons();
-
-  bugExplanationEl.style.display = "none";
-}
-
-  // ===== Show hint button =====
+  // ===== Hint modal =====
   const hintModal = document.getElementById("hintModal");
-const hintText = document.getElementById("hintText");
-const closeBtn = hintModal.querySelector(".close");
+  const hintText = document.getElementById("hintText");
+  const closeBtn = hintModal.querySelector(".close");
 
-showHintBtn.addEventListener("click", () => {
-  if (!currentSnippet || currentSnippet.fixes.length === 0) {
-    hintText.textContent = "⚠️ No hints available.";
-  } else if (score < 1) {
-    hintText.textContent = "⚠️ Not enough points for a hint.";
-  } else {
-    updateScore(-1);
-    const hintFix = currentSnippet.fixes[0];
-    hintText.textContent = `💡 Hint: Look at line ${hintFix.line + 1}, near position ${hintFix.position + 1}`;
-  }
-  hintModal.style.display = "block";
-});
+  showHintBtn.addEventListener("click", () => {
+    if (!currentSnippet || currentSnippet.fixes.length === 0) {
+      hintText.textContent = "⚠️ No hints available.";
+    } else if (score < 1) {
+      hintText.textContent = "⚠️ Not enough points for a hint.";
+    } else {
+      updateScore(-1);
+      const hintFix = currentSnippet.fixes[0];
+      hintText.textContent = `💡 Hint: Look at line ${hintFix.line + 1}, near position ${hintFix.position + 1}`;
+    }
+    hintModal.style.display = "block";
+  });
 
-// Close when clicking the "×"
-closeBtn.addEventListener("click", () => {
-  hintModal.style.display = "none";
-});
+  closeBtn.addEventListener("click", () => hintModal.style.display = "none");
+  window.addEventListener("click", (e) => {
+    if (e.target === hintModal) hintModal.style.display = "none";
+  });
 
-// Close when clicking outside modal
-window.addEventListener("click", (e) => {
-  if (e.target === hintModal) {
-    hintModal.style.display = "none";
-  }
-});
-
-  // ===== Next snippet button =====
+  // ===== Next snippet =====
   nextSnippetBtn.addEventListener("click", () => {
     if (gameFinished) return;
     if (currentSnippetIndex < builtInSnippets.length - 1) {
@@ -326,7 +283,7 @@ window.addEventListener("click", (e) => {
     }
   });
 
-  // ===== Create user and start game =====
+  // ===== Create user =====
   createUserBtn.addEventListener("click", () => {
     if (!snippetsReady) {
       alert("⏳ Please wait, loading snippets...");
@@ -337,41 +294,33 @@ window.addEventListener("click", (e) => {
     certificateSection.style.display = "none";
     gameFinished = false;
 
-    // Play bg music muted initially
     bgMusic.muted = true;
     bgMusic.play().catch(() => {});
-
     startTimer();
   });
 
-  // ===== Generate PDF certificate =====
+  // ===== Certificate =====
   generateCertificateBtn.addEventListener("click", () => {
     const user = profiles[currentUserIndex];
     if (!user) return alert("No active player.");
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
-    // Background rectangle
     doc.setFillColor(230, 240, 255);
     doc.rect(0, 0, 210, 297, "F");
-
-    // White inner box
     doc.setFillColor(255, 255, 255);
     doc.setDrawColor(100, 149, 237);
     doc.roundedRect(10, 20, 190, 250, 10, 10, "FD");
 
-    // Title
     doc.setTextColor(25, 25, 112);
     doc.setFontSize(22);
     doc.setFont("helvetica", "bold");
     doc.text("Bug Busters Certificate", 105, 50, { align: "center" });
 
-    // Subtitle
     doc.setFontSize(16);
     doc.setTextColor(70, 130, 180);
     doc.text("Certificate of Achievement", 105, 70, { align: "center" });
 
-    // Recipient
     doc.setFontSize(14);
     doc.setTextColor(50, 50, 50);
     doc.text("This certifies that", 105, 95, { align: "center" });
@@ -381,11 +330,9 @@ window.addEventListener("click", (e) => {
     doc.text(user.name, 105, 115, { align: "center" });
 
     doc.setFontSize(14);
-    doc.setFont("helvetica", "normal");
     doc.text("has successfully completed all debugging challenges", 105, 135, { align: "center" });
     doc.text(`with a score of ${user.score}.`, 105, 150, { align: "center" });
 
-    // Signature line + name
     const centerX = 105;
     doc.setDrawColor(100, 149, 237);
     doc.setLineWidth(0.8);
@@ -394,7 +341,6 @@ window.addEventListener("click", (e) => {
     doc.setFont("helvetica", "bold");
     doc.text("Jaspel Bosales, Coding Teacher", centerX, 210, { align: "center" });
 
-    // Footer
     doc.setFontSize(10);
     doc.setTextColor(100, 100, 100);
     doc.text("Issued by Bug Busters: Debugging Challenge", 105, 280, { align: "center" });
@@ -422,7 +368,7 @@ window.addEventListener("click", (e) => {
     generateCertificateBtn.style.display = "none";
   }
 
-  // ===== Background Music Toggle =====
+  // ===== Music toggle =====
   toggleMusicBtn.addEventListener("click", () => {
     if (bgMusic.paused) {
       bgMusic.muted = false;
@@ -434,14 +380,11 @@ window.addEventListener("click", (e) => {
     }
   });
 
-  // Enter key on username triggers start
   newUserNameInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      createUserBtn.click();
-    }
+    if (e.key === "Enter") createUserBtn.click();
   });
 
-  // ===== Initialization =====
+  // ===== Init =====
   async function init() {
     try {
       const resp = await fetch("snippets.json");
@@ -455,7 +398,6 @@ window.addEventListener("click", (e) => {
       alert("❌ Failed to load snippets.json");
       console.error(err);
     }
-
     if (profiles.length > 0) loadCurrentUserData();
   }
 
