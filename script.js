@@ -35,6 +35,8 @@
   // Sound Effects
   const nextSound = document.getElementById("nextSound");
   const finishSound = document.getElementById("finishSound");
+  const correctSound = document.getElementById("correctSound");
+  const wrongSound = document.getElementById("wrongSound");
 
   let snippetsReady = false;
   let gameFinished = false;
@@ -75,10 +77,7 @@
     bgMusic.pause();
     bgMusic.muted = true;
 
-    finishSound.muted = false;
-    finishSound.currentTime = 0;
-    finishSound.play().catch(e => console.log("Sound play error:", e));
-
+    playSound(finishSound);
     launchConfetti();
     generateCertificateBtn.style.display = "inline-block";
     certificateSection.style.display = "block";
@@ -171,6 +170,18 @@
     });
 
     if (fix) {
+      // ✅ Correct fix
+      playSound(correctSound);
+
+      // 🎉 Small confetti burst
+      confetti({
+        particleCount: 20,
+        spread: 45,
+        startVelocity: 35,
+        scalar: 0.8,
+        origin: { y: 0.7 }
+      });
+
       // Apply fix
       const lines = currentSnippet.code.split("\n");
       const lineText = lines[line];
@@ -205,6 +216,9 @@
         }
       }
     } else {
+      // ❌ Wrong click
+      playSound(wrongSound);
+
       bugExplanationEl.innerHTML = `
         <p style="margin:8px 0; color:#ff5252; font-weight:bold;">❌ Not a bug. Try again.</p>
       `;
@@ -218,9 +232,7 @@
     gameFinished = true;
 
     clearInterval(timerInterval);
-    finishSound.muted = false;
-    finishSound.currentTime = 0;
-    finishSound.play().catch(e => console.log("Sound play error:", e));
+    playSound(finishSound);
 
     bgMusic.pause();
     bgMusic.muted = true;
