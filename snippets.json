@@ -101,8 +101,8 @@
       {
         "line": 1,
         "position": 15,
-        "length": 4,
-        "correct": "'a'",
+        "length": 1,
+        "correct": "a",
         "explanation": "'c' is not a key in the dictionary. Use an existing key like 'a' to avoid errors."
       }
     ]
@@ -221,7 +221,7 @@
       {
         "line": 2,
         "position": 9,
-        "length": 1,
+        "length": 2,
         "correct": "(y+1)",
         "explanation": "Division by zero is not allowed. Use a non-zero denominator."
       }
@@ -233,7 +233,7 @@
       {
         "line": 1,
         "position": 18,
-        "length": 7,
+        "length": 5,
         "correct": "numbers",
         "explanation": "Use the built-in len() function, not '.len()'."
       }
