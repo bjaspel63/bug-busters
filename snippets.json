@@ -233,7 +233,7 @@
       {
         "line": 1,
         "position": 18,
-        "length": 0,
+        "length": 2,
         "correct": "numbers",
         "explanation": "Use the built-in len() function, not '.len()'."
       }
