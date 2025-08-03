@@ -101,7 +101,7 @@
       {
         "line": 1,
         "position": 15,
-        "length": 2,
+        "length": 4,
         "correct": "'a'",
         "explanation": "'c' is not a key in the dictionary. Use an existing key like 'a' to avoid errors."
       }
@@ -168,13 +168,13 @@
     ]
   },
   {
-    "code": "print('The sum is: ' + 5)",
+    "code": "print('The sum is: ' 5)",
     "fixes": [
       {
         "line": 0,
-        "position": 21,
+        "position": 20,
         "length": 1,
-        "correct": "str(5)",
+        "correct": ",",
         "explanation": "Numbers must be converted to strings before concatenation with text."
       }
     ]
@@ -184,7 +184,7 @@
     "fixes": [
       {
         "line": 1,
-        "position": 15,
+        "position": 14,
         "length": 1,
         "correct": "2",
         "explanation": "Index 3 is out of range for a list of length 3. The last index is 2."
@@ -197,8 +197,8 @@
       {
         "line": 1,
         "position": 10,
-        "length": 6,
-        "correct": "print(i)",
+        "length": 3,
+        "correct": "(i)",
         "explanation": "In Python 3, 'print' requires parentheses."
       }
     ]
@@ -208,7 +208,7 @@
     "fixes": [
       {
         "line": 1,
-        "position": 19,
+        "position": 17,
         "length": 0,
         "correct": ", ",
         "explanation": "You must separate arguments in print with a comma."
@@ -221,8 +221,8 @@
       {
         "line": 2,
         "position": 9,
-        "length": 3,
-        "correct": "x / (y+1)",
+        "length": 1,
+        "correct": "(y+1)",
         "explanation": "Division by zero is not allowed. Use a non-zero denominator."
       }
     ]
@@ -232,9 +232,9 @@
     "fixes": [
       {
         "line": 1,
-        "position": 13,
+        "position": 18,
         "length": 7,
-        "correct": "len(numbers)",
+        "correct": "numbers",
         "explanation": "Use the built-in len() function, not '.len()'."
       }
     ]
