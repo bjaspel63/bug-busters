@@ -233,9 +233,9 @@
       {
         "line": 1,
         "position": 10,
-        "length": 2,
+        "length": 0,
         "correct": "numbers",
-        "explanation": "Use the built-in len() function, not '.len()'."
+        "explanation": "Use the built-in len() function with a variable name."
       }
     ]
   }
