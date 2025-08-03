@@ -5,7 +5,7 @@
   let score = 0;
 
   // Timer variables
-  let timerDuration = 6 * 60; 
+  let timerDuration = 30 * 60; 
   let timeLeft = timerDuration;
   let timerInterval = null;
 
