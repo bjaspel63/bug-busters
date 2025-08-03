@@ -228,12 +228,12 @@
     ]
   },
   {
-    "code": "numbers = [1, 2, 3]\nprint(numbers.len())",
+    "code": "numbers = [1, 2, 3]\nprint(len())",
     "fixes": [
       {
         "line": 1,
         "position": 18,
-        "length": 5,
+        "length": 0,
         "correct": "numbers",
         "explanation": "Use the built-in len() function, not '.len()'."
       }
