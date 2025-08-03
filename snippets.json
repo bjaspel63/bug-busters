@@ -175,7 +175,7 @@
         "position": 20,
         "length": 1,
         "correct": ",",
-        "explanation": "Numbers must be converted to strings before concatenation with text."
+        "explanation": "String and numbers must separate with a comma."
       }
     ]
   },
